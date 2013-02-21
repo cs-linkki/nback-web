@@ -1,4 +1,4 @@
 nback-web
 =========
 
-o-hi
+web-frontend for running nback-tests
