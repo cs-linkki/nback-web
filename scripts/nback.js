@@ -4,26 +4,6 @@ var nback = {};
 // appended to this object
 nback.data = [];
 
-// config for the app goes here
-nback.config = {
-    pauseBetweenShowsInMs : 1000,
-    elementVisibleInMs: 5000,
-    elements: [
-        {
-            text: "LOL",
-            location: "top"
-        },
-        {
-            text: "HAHA",
-            location: "bottom"
-        },
-        {
-            text: "TROLOLO",
-            location: "bottom"
-        }
-    ]
-};
-
 // and the main code
 nback.program = {
     currentTimeoutVariable: null,
