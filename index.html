@@ -6,7 +6,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-    <div id="wrapper">
+
+    <div id="entry">
+        Enter your participant ID and press the button<br/>
+        <input id="participant-id"></input><br/>
+        <button id='entry-ok'>Continue</button>
+    </div>
+
+    <div id="wrapper" style="display: none;">
         <div id="pad"></div>
         <div id="top">TOP</div>
         <div id="divider"></div>
@@ -20,13 +27,31 @@
     <script>
     $(document).ready( function() {
 
-        nback.program.init();    
+        nback.program.init();
 
-        // program will start at keypress
-        $(document).one('keydown', function() {
-            console.log("pressed!: " + $.now());            
-            nback.program.start();
-        });
+        $('#entry-ok').on('click', function() {
+
+            if( $('#participant-id').val().length == 0 ) {
+                alert("Provide a participation ID");
+                return;
+            }
+
+            // add participation info
+            nback.data.push( {
+                participant: $('#participant-id').val()
+                // TODO: add browser info
+            } );
+
+            $('#entry').hide();
+            $('#wrapper').show();
+
+            // program will start at keypress
+            $(document).one('keydown', function() {
+                console.log("pressed!: " + $.now());            
+                nback.program.start();
+            } );
+
+        } );
         
     } );
     </script>
