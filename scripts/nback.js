@@ -125,7 +125,7 @@ nback.program = {
         nback.program.clear(); 
         
         console.log(JSON.stringify(nback.data));
-        
-        alert("should push data: " + JSON.stringify(nback.data) + " to an arbitrary backend.")
+
+        $.post( './data/log.php', { data: JSON.stringify( nback.data ) }, $.noop );
     }
 }
