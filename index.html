@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="css/style.css"></link>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <div id="wrapper">
-            <div id="pad"></div>
-            <div id="top">TOP</div>
-            <div id="divider"></div>
-            <div id="bottom">BOTTOM</div>
-        </div>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+    <title>NBack test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+    <div id="wrapper">
+        <div id="pad"></div>
+        <div id="top">TOP</div>
+        <div id="divider"></div>
+        <div id="bottom">BOTTOM</div>
+    </div>
 
-        <script src="lib/jquery-1.9.1.min.js"></script>
-	<script src="scripts/nback.js"></script>
-	<script src="conf/nback-config.js"></script>
+    <script src="lib/jquery-1.9.1.min.js"></script>
+    <script src="scripts/nback.js"></script>
+    <script src="conf/nback-config.js"></script>
 
-        <script>
-            $(document).ready(function() {
-                nback.program.init();    
-                
-                // program will start at keypress
-                $(document).one('keydown', function() {
-                    console.log("pressed!: " + $.now());            
-                    nback.program.start();
-                });
-            });
-        </script>
-    </body>
+    <script>
+    $(document).ready( function() {
+
+        nback.program.init();    
+
+        // program will start at keypress
+        $(document).one('keydown', function() {
+            console.log("pressed!: " + $.now());            
+            nback.program.start();
+        });
+        
+    } );
+    </script>
+</body>
 </html>
