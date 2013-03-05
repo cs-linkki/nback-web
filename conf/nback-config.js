@@ -16,7 +16,7 @@ nback.config.endText = "Thank you for participating!";
 nback.config.testType = "NUMBERREACTION";
 
 // backend to submit data to
-nback.config.backendAddress = "http://werkko.com";
+nback.config.backendAddress = "http://linkki-nback.herokuapp.com/app/result";
 
 // config for the app goes here
 // how long to hide an element in milliseconds
