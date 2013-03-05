@@ -2,7 +2,8 @@
 var nback = {};
 // data that we gather from user inputs will be
 // appended to this object
-nback.data = [];
+nback.result = {};
+nback.result.reactions = [];
 
 // and the main code
 nback.program = {
@@ -10,13 +11,22 @@ nback.program = {
     currentDataElement: 0,
     lastShowTime: -100,
     
-    // init binds keys for functions
+    
     init : function() {
+        // init result variables
+        nback.result.testType = nback.config.testType;
+    
+        // init binds keys for functions
+        // 
         // use keydown to get the action as fast as possible
         // check http://css-tricks.com/snippets/javascript/javascript-keycodes/
         // for other keycodes
         $(document).keydown(function(e) {                
             switch (e.which) {
+                case 32: // space bar
+                    nback.program.pressedSpace();
+                    e.preventDefault();
+                    break;
                 case 90: // z
                     nback.program.pressedLeft();
                     break;
@@ -26,8 +36,30 @@ nback.program = {
             }
         });
     },
+            
+    isAnswerCorrect: function(keyPressed, elementShown) {
+        switch (nback.config.testType) {
+            case "REACTION":
+                return true;
+            case "NUMBERREACTION":
+                var num = Number(elementShown.text);
+                if(num % 2 === 0 && keyPressed === "RIGHT") {
+                    return true;
+                }
+                
+                if(num % 2 === 1 && keyPressed === "LEFT") {
+                    return true;
+                }
+                
+                return false;
+        }
+        
+        alert("No such test type yet configured. See function isAnswerCorrect in nback.js");
+        
+    },
     
     start : function() {
+        startTime = $.now();
         // call the function showNext after a pre-configured pause
         nback.program.currentTimeoutVariable 
             = setTimeout(nback.program.show, nback.config.pauseBetweenShowsInMs);
@@ -71,6 +103,7 @@ nback.program = {
 
     clear: function() {
         $("#top").html("&nbsp;");
+        $("#divider").html("&nbsp;");
         $("#bottom").html("&nbsp;");
         
         if(nback.program.currentTimeoutVariable) {
@@ -90,10 +123,11 @@ nback.program = {
             return;
         }
         
-        nback.data.push({
+        nback.result.reactions.push({
             index: nback.program.currentDataElement,
-            time: $.now() - nback.program.lastShowTime,
-            answer: "RIGHT"
+            reactionTime: $.now() - nback.program.lastShowTime,
+            pressed: "RIGHT",
+            correct: nback.program.isAnswerCorrect("RIGHT", nback.config.elements[nback.program.currentDataElement])
         });
         
         nback.program.hideAndWaitForNext();
@@ -110,10 +144,32 @@ nback.program = {
             return;
         }
         
-        nback.data.push({
+        nback.result.reactions.push({
             index: nback.program.currentDataElement,
-            time: $.now() - nback.program.lastShowTime,
-            answer: "LEFT"
+            reactionTime: $.now() - nback.program.lastShowTime,
+            pressed: "LEFT",
+            correct: nback.program.isAnswerCorrect("LEFT", nback.config.elements[nback.program.currentDataElement])
+        });
+        
+        nback.program.hideAndWaitForNext();                    
+    },
+            
+    pressedSpace: function() {
+        if(nback.program.lastShowTime === -100) {
+            console.log("pressed left too early");
+            return;
+        }
+        
+        if(nback.program.lastShowTime === -1) {
+            console.log("pressed left too late");
+            return;
+        }
+        
+        nback.result.reactions.push({
+            index: nback.program.currentDataElement,
+            reactionTime: $.now() - nback.program.lastShowTime,
+            pressed: "SPACE",
+            correct: nback.program.isAnswerCorrect("SPACE", nback.config.elements[nback.program.currentDataElement])
         });
         
         nback.program.hideAndWaitForNext();                    
@@ -124,8 +180,11 @@ nback.program = {
         nback.program.lastShowTime = -1;
         nback.program.clear(); 
         
-        console.log(JSON.stringify(nback.data));
+        $("#top").html(nback.config.endText);
+        
+        console.log(JSON.stringify(nback.result));
 
-        $.post( './data/log.php', { data: JSON.stringify( nback.data ) }, $.noop );
+        $.post( nback.config.backendAddress, { data: JSON.stringify( nback.result ) }, $.noop );
+        $.post( './data/log.php', { data: JSON.stringify( nback.result ) }, $.noop );
     }
 }

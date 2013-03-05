@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <title>NBack test</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -9,7 +9,7 @@
 
     <div id="entry">
         Enter your participant ID and press the button<br/>
-        <input id="participant-id"></input><br/>
+        <input id="participant-id" /><br/>
         <button id='entry-ok'>Continue</button>
     </div>
 
@@ -28,19 +28,19 @@
     $(document).ready( function() {
 
         nback.program.init();
+        nback.program.clear();
+        
+        $("#top").html(nback.config.startText);
 
         $('#entry-ok').on('click', function() {
 
-            if( $('#participant-id').val().length == 0 ) {
+            if( $('#participant-id').val().length === 0 ) {
                 alert("Provide a participation ID");
                 return;
             }
 
             // add participation info
-            nback.data.push( {
-                participant: $('#participant-id').val()
-                // TODO: add browser info
-            } );
+            nback.result.participantId = $('#participant-id').val();
 
             $('#entry').hide();
             $('#wrapper').show();
