@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+
+        <table id="results">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Participant Id</th>
+                    <th>Test Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <td>etc</td>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                    <td>etc</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script src="lib/jquery-1.9.1.min.js"></script>
+        <script src="lib/jquery.dataTables.min.js"></script>
+        <script src="conf/nback-config.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("#results").dataTable({
+                    "bProcessing": true,
+                    "sAjaxSource": nback.config.backendAddress,
+                    "aoColumns": [
+                        {"mData": "id"},
+                        {"mData": "participantId"},
+                        {"mData": "testType"}
+                    ]
+                });
+            });
+        </script>
+    </body>
+</html>
